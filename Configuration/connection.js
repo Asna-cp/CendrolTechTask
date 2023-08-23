@@ -1,17 +1,13 @@
-const mongoose = require('mongoose')
+const mongoose = require("mongoose");
 
-// Database connection 
-const db = "mongodb://127.0.0.1:27017/cendrolTech'"
-// await mongoose.connect(', connectionParams);
-
-
+// Database connection
+const db = "mongodb://127.0.0.1:27017/cendrolTech'";
 mongoose.connect(db, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-   
-}) 
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 // connection checking
 mongoose.connection
-.once('open', () =>console.log('database connected '))
-.on('error', error => console.log('error:', error))
+  .once("open", () => console.log("database connected "))
+  .on("error", (error) => console.log("error:", error));

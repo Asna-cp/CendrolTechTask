@@ -5,7 +5,6 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-
   phoneNumber: {
     type: Number,
     required: true,
@@ -21,7 +20,6 @@ const userSchema = new mongoose.Schema({
   },
   profilepicture: {
     type: String,
-   
   },
 });
 
