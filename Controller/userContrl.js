@@ -1,14 +1,36 @@
 const userModel = require("../Model/userModel");
-const bcrypt = require("bcryptjs");
+const bcrypt = require("bcrypt");
 const jwt = require(`jsonwebtoken`);
+
+//LOGIN WITH Token Generate Function
+const Login = async (req, res) => {
+  const user = await userModel.findOne({ email: req.body.email });
+  const JWT_SECRET = process.env.JWT_SECRET;
+  if (!user) {
+    return res.status(400).send("The user not found");
+  }
+
+  if (user && bcrypt.compareSync(req.body.password, user.password)) {
+    const token = jwt.sign(
+      {
+        userId: user.id,
+      },
+      JWT_SECRET,
+      { expiresIn: "4w" }
+    );
+    res.status(200).send({ user: user.email, token: token });
+  } else {
+    res.status(400).send("Password is Wrong!");
+  }
+};
 
 //CREATE USER
 
 const registerController = async (req, res) => {
   try {
     console.log(req.body);
-    const { fullName, phoneNumber, profilepicture, email, password } = req.body;
-    // const profilepicture = req.file;
+    const { fullName, phoneNumber, email, password } = req.body;
+    const profilepicture = req.file;
 
     // Check if the user already exists
     const existingUser = await userModel.findOne({ email });
@@ -30,10 +52,12 @@ const registerController = async (req, res) => {
     });
 
     const savedUser = await newUser.save();
+    const token = generateToken(user);
 
     res
       .status(201)
-      .json({ message: "User registered successfully", user: savedUser });
+      // .json({ message: "User registered successfully", user: savedUser });
+      .json({ message: "User registered successfully", status: true, token });
   } catch (error) {
     console.error("Error during registration:", error);
     res.status(500).json({ message: "Registration failed", error });
@@ -104,4 +128,5 @@ module.exports = {
   deleteUsers,
   getUserById,
   updateUsers,
+  Login,
 };

@@ -11,6 +11,7 @@ const {
   deleteUsers,
   getUserById,
   updateUsers,
+  Login,
 } = require("../Controller/userContrl");
 
 //router
@@ -22,6 +23,7 @@ router.post(
   profilePictureUpload.single("profilepicture"),
   registerController
 );
+router.post("/login", Login);
 
 router.post("/deleteUser/:id", deleteUsers);
 router.post("/updateUser/:id", updateUsers);

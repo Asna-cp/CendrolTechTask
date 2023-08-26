@@ -6,6 +6,7 @@ const mongoose = require('./Configuration/connection')
 const userRoute = require('./Routes/userRoutes');
 const morgan = require('morgan')
 const path = require('path');
+const jwt = require('jsonwebtoken');
 
 const api = process.env.API_URL;
 
